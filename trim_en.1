@@ -1,0 +1,108 @@
+.\" trim.1 – English man page for trim
+.\" View with:  man ./trim.1
+.\" Install:    sudo cp trim.1 /usr/local/share/man/man1/trim.1
+.\"             sudo mandb
+.TH TRIM 1 "2025" "trim 1.0" "User Commands"
+.
+.SH NAME
+trim \- remove leading and trailing whitespace from each line
+.
+.SH SYNOPSIS
+.B trim
+.RI [ FILE .\|.\|.]
+.
+.SH DESCRIPTION
+.B trim
+reads each specified
+.I FILE
+line by line and removes leading and trailing whitespace characters
+(spaces, tabs, and any other characters recognised by
+.BR isspace (3))
+from every line.
+The result is written to
+.IR stdout ;
+each output line is terminated with a newline character (\en).
+.PP
+If no
+.I FILE
+is given, or if the only argument is
+.BR \- ,
+.B trim
+reads from standard input
+.RI ( stdin ).
+.PP
+.B trim
+is designed to work well as a filter in shell pipelines, for example to
+clean up the output of other commands or to normalise text files in bulk.
+.
+.SH OPTIONS
+.B trim
+currently accepts no options.
+.
+.SH EXAMPLES
+Remove leading and trailing whitespace from a single string:
+.PP
+.RS
+.EX
+echo "   Hello World   " | trim
+.EE
+.RE
+.PP
+Output:
+.PP
+.RS
+.EX
+Hello World
+.EE
+.RE
+.PP
+Trim all lines in a text file:
+.PP
+.RS
+.EX
+trim essay.txt
+.EE
+.RE
+.PP
+Trim multiple files and write the result to a new file:
+.PP
+.RS
+.EX
+trim file1.txt file2.txt > result.txt
+.EE
+.RE
+.PP
+Use as a filter in a pipeline:
+.PP
+.RS
+.EX
+grep "keyword" data.txt | trim
+.EE
+.RE
+.PP
+.
+.SH NOTES
+.B trim
+uses
+.BR getline (3)
+for line-by-line input, so arbitrarily long lines and large files are
+handled correctly without fixed-size buffers.
+.PP
+Whitespace
+.I within
+a line (between words) is left unchanged.
+.PP
+Characters considered whitespace are those recognised by
+.BR isspace (3):
+space (0x20), horizontal tab (\\t), newline (\\n), carriage return (\\r),
+form feed (\\f), and vertical tab (\\v).
+.
+.SH SEE ALSO
+.BR sed (1),
+.BR awk (1),
+.BR xargs (1),
+.BR isspace (3),
+.BR getline (3)
+.
+.SH AUTHOR
+Christian Forler

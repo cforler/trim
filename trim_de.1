@@ -1,0 +1,112 @@
+.\" trim.de.1 – Deutsche Manpage für trim
+.\" Anzeigen mit: man ./trim.de.1
+.\" Installieren:  sudo cp trim.de.1 /usr/local/share/man/de/man1/trim.1
+.\"               sudo mandb
+.TH TRIM 1 "2025" "trim 1.0" "Benutzerbefehle"
+.
+.SH NAME
+trim \- Entfernt führende und abschließende Leerzeichen aus jeder Zeile
+.
+.SH ÜBERSICHT
+.B trim
+.RI [ DATEI .\|.\|.]
+.
+.SH BESCHREIBUNG
+.B trim
+liest jede angegebene
+.I DATEI
+zeilenweise und entfernt führende sowie abschließende Leerzeichen
+(Leerzeichen, Tabulatoren und andere Whitespace-Zeichen gemäß
+.BR isspace (3))
+aus jeder Zeile.
+Das Ergebnis wird nach
+.I stdout
+geschrieben; jede Ausgabezeile wird mit einem Zeilenumbruch (\en) abgeschlossen.
+.PP
+Wird keine
+.I DATEI
+angegeben oder lautet das einzige Argument
+.BR \- ,
+liest
+.B trim
+von der Standardeingabe
+.RI ( stdin ).
+.PP
+Das Programm eignet sich besonders gut als Filter in einer Shell-Pipeline,
+zum Beispiel um die Ausgabe anderer Befehle zu bereinigen oder um
+Textdateien zeitsparend zu normalisieren.
+.
+.SH OPTIONEN
+Derzeit akzeptiert
+.B trim
+keine Optionen.
+.
+.
+.SH BEISPIELE
+Führende und abschließende Leerzeichen aus einer einzelnen Zeichenkette
+entfernen:
+.PP
+.RS
+.EX
+echo "   Hallo Welt   " | trim
+.EE
+.RE
+.PP
+Ausgabe:
+.PP
+.RS
+.EX
+Hallo Welt
+.EE
+.RE
+.PP
+Alle Zeilen einer Textdatei trimmen:
+.PP
+.RS
+.EX
+trim essay.txt
+.EE
+.RE
+.PP
+Mehrere Dateien trimmen und das Ergebnis in eine neue Datei schreiben:
+.PP
+.RS
+.EX
+trim datei1.txt datei2.txt > ergebnis.txt
+.EE
+.RE
+.PP
+Als Filter in einer Pipeline:
+.PP
+.RS
+.EX
+grep "Suchbegriff" daten.txt | trim
+.EE
+.RE
+.PP
+.
+.SH HINWEISE
+.B trim
+verwendet
+.BR getline (3)
+zum zeilenweisen Lesen, sodass auch sehr lange Zeilen und große Dateien
+korrekt verarbeitet werden.
+.PP
+Leerzeichen
+.I innerhalb
+einer Zeile (zwischen Wörtern) werden nicht verändert.
+.PP
+Als Whitespace gilt alles, was
+.BR isspace (3)
+als solches erkennt: Leerzeichen (0x20), Tabulator (\\t), Zeilenumbruch (\\n),
+Wagenrücklauf (\\r), Seitenvorschub (\\f) und vertikaler Tabulator (\\v).
+.
+.SH SIEHE AUCH
+.BR sed (1),
+.BR awk (1),
+.BR xargs (1),
+.BR isspace (3),
+.BR getline (3)
+.
+.SH AUTOR
+Christian Forler
